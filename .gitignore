@@ -1,0 +1,16 @@
+# Obsidian vault state (per-machine UI layout and plugin settings, not spec content)
+.obsidian/
+
+# OS and editor noise
+.DS_Store
+*.swp
+*~
+
+# Python bytecode from the _tools/ scripts
+__pycache__/
+*.py[cod]
+
+# Built programs under _tools/ (the source is committed, the compiled binaries are not)
+_tools/**/vault-health
+_tools/**/dashboard
+*.exe

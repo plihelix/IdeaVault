@@ -1,0 +1,224 @@
+{
+  "name": "Untitled Idea Vault",
+  "owner": "owner",
+  "created": "2026-10-03",
+  "namespaces": {
+    "REQ": {
+      "label": "claim the idea takes on as an obligation",
+      "block": [
+        1,
+        60
+      ],
+      "width": 3
+    },
+    "CON": {
+      "label": "constraint fixed outside the idea",
+      "block": [
+        1,
+        40
+      ],
+      "width": 3
+    },
+    "ASM": {
+      "label": "assumption the idea rests on",
+      "block": [
+        1,
+        40
+      ],
+      "width": 3
+    },
+    "AC": {
+      "label": "acceptance criterion",
+      "block": [
+        1,
+        100
+      ],
+      "width": 3
+    },
+    "CMP": {
+      "label": "part of the idea",
+      "block": [
+        1,
+        60
+      ],
+      "width": 3
+    },
+    "IF": {
+      "label": "boundary between two parts",
+      "block": [
+        1,
+        40
+      ],
+      "width": 3
+    },
+    "STG": {
+      "label": "stage of the work",
+      "block": [
+        1,
+        30
+      ],
+      "width": 3
+    },
+    "ROLE": {
+      "label": "role that carries a stage",
+      "block": [
+        1,
+        20
+      ],
+      "width": 3
+    },
+    "RSK": {
+      "label": "risk to the idea",
+      "block": [
+        1,
+        40
+      ],
+      "width": 3
+    },
+    "CTL": {
+      "label": "control limiting a risk",
+      "block": [
+        1,
+        60
+      ],
+      "width": 3
+    },
+    "GATE": {
+      "label": "verification gate",
+      "block": [
+        1,
+        30
+      ],
+      "width": 3
+    },
+    "MET": {
+      "label": "metric",
+      "block": [
+        1,
+        40
+      ],
+      "width": 3
+    },
+    "S": {
+      "label": "source card",
+      "block": [
+        1,
+        100
+      ],
+      "width": 3
+    },
+    "FND": {
+      "label": "finding",
+      "block": [
+        1,
+        60
+      ],
+      "width": 3
+    },
+    "ADR": {
+      "label": "decision record",
+      "block": [
+        1,
+        60
+      ],
+      "width": 4
+    },
+    "OQ": {
+      "label": "open question",
+      "block": [
+        1,
+        40
+      ],
+      "width": 3
+    }
+  },
+  "folder_blocks": {
+    "01-userspace": {
+      "ADR": [
+        1,
+        60
+      ],
+      "OQ": [
+        1,
+        40
+      ]
+    },
+    "20-claims": {
+      "REQ": [
+        1,
+        60
+      ],
+      "CON": [
+        1,
+        40
+      ],
+      "ASM": [
+        1,
+        40
+      ],
+      "AC": [
+        1,
+        100
+      ]
+    },
+    "30-structure": {
+      "CMP": [
+        1,
+        60
+      ],
+      "IF": [
+        1,
+        40
+      ]
+    },
+    "40-plan": {
+      "STG": [
+        1,
+        30
+      ],
+      "ROLE": [
+        1,
+        20
+      ]
+    },
+    "50-risk": {
+      "RSK": [
+        1,
+        40
+      ],
+      "CTL": [
+        1,
+        60
+      ]
+    },
+    "60-quality": {
+      "GATE": [
+        1,
+        30
+      ],
+      "MET": [
+        1,
+        40
+      ]
+    },
+    "70-evidence": {
+      "S": [
+        1,
+        100
+      ],
+      "FND": [
+        1,
+        60
+      ]
+    }
+  },
+  "spec_index_folders": [
+    "10-idea",
+    "20-claims",
+    "30-structure",
+    "40-plan",
+    "50-risk",
+    "60-quality",
+    "70-evidence"
+  ]
+}

@@ -1,0 +1,337 @@
+/* Gruvbox palette, dark and light. The page switches by setting data-theme on <html>. */
+
+:root[data-theme="dark"] {
+  --bg0: #1d2021;
+  --bg1: #282828;
+  --bg2: #3c3836;
+  --bg3: #504945;
+  --bg4: #665c54;
+  --fg0: #fbf4c1;
+  --fg1: #ebdbb2;
+  --fg2: #d5c4a1;
+  --fg3: #bdae93;
+  --fg4: #a89984;
+  --ok: #b8bb26;
+  --warn: #fabd2f;
+  --bad: #fb4934;
+  --info: #8ec07c;
+  --link: #83a598;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="light"] {
+  /* Gruvbox's light neutrals, layered the way dark mode layers its own: --bg0 is the deepest
+     surface and every layer above it is a step lighter. --bg4 is the muted neutral. */
+  --bg0: #ebdbb2;
+  --bg1: #f2e5bc;
+  --bg2: #fbf1c7;
+  --bg3: #f9f5d7;
+  --bg4: #bdae93;
+  --fg0: #282828;
+  --fg1: #3c3836;
+  --fg2: #504945;
+  --fg3: #665c54;
+  --fg4: #7c6f64;
+  --ok: #79740e;
+  --warn: #b57614;
+  --bad: #9d0006;
+  --info: #076678;
+  --link: #076678;
+  --shadow: rgba(60, 56, 54, 0.25);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg0);
+  color: var(--fg1);
+  font: 15px/1.55 -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid var(--bg2);
+  background: var(--bg1);
+}
+
+h1 { margin: 0; font-size: 22px; color: var(--fg0); letter-spacing: 0.3px; }
+.tagline { margin: 4px 0 0; color: var(--fg3); font-size: 13px; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--fg3); }
+.field input, .field select {
+  background: var(--bg0);
+  border: 1px solid var(--bg3);
+  border-radius: 6px;
+  color: var(--fg1);
+  font: inherit;
+  padding: 7px 9px;
+  min-width: 150px;
+}
+.field input { min-width: 230px; }
+
+button {
+  background: var(--bg3);
+  border: 1px solid var(--bg4);
+  border-radius: 6px;
+  color: var(--fg0);
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 12px;
+}
+button:hover { background: var(--bg4); }
+button.quiet { background: transparent; color: var(--fg2); }
+button.quiet:hover { background: var(--bg2); color: var(--fg0); }
+
+main { padding: 20px 24px 40px; max-width: 1180px; }
+
+/* One row per service, and its answers hang underneath in a drawer. The left edge alone
+   carries the overall colour, all the way down the drawer. */
+.server {
+  border-radius: 8px;
+  border: 1px solid var(--bg2);
+  border-left: 5px solid var(--bg4);
+  background: var(--bg1);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.server.ok { border-left-color: var(--ok); }
+.server.attention { border-left-color: var(--warn); }
+.server.error { border-left-color: var(--bad); }
+.server.waiting { border-left-color: var(--bg4); }
+
+.server-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 26px; padding: 7px 12px; }
+
+/* The handle. The chevron points down while the answers are out. */
+.drawer-toggle {
+  display: flex;
+  padding: 4px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--fg4);
+}
+.drawer-toggle:hover { background: var(--bg2); color: var(--fg1); }
+.chevron { transition: transform 160ms ease; }
+.server.closed .chevron { transform: rotate(-90deg); }
+
+.server-icon { display: flex; flex: none; color: var(--fg4); }
+.server-id { display: flex; align-items: baseline; gap: 8px; }
+#server-host {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--fg0);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.server-kind { font-size: 11.5px; color: var(--fg4); }
+
+/* Modem lights: Rx is what the service answers, Tx is what this page sends. */
+.modem { display: flex; align-items: center; gap: 10px; }
+.led { display: flex; align-items: center; gap: 5px; }
+.led-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--fg4);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.light {
+  width: 11px;
+  height: 8px;
+  border-radius: 2px;
+  border: 1px solid var(--bg3);
+  background: var(--bg3);
+}
+.light.green { background: var(--ok); border-color: var(--ok); box-shadow: 0 0 7px var(--ok); }
+.light.warn { background: var(--warn); border-color: var(--warn); box-shadow: 0 0 7px var(--warn); }
+.light.down { background: var(--bad); border-color: var(--bad); box-shadow: 0 0 7px var(--bad); }
+.light.ready { background: var(--warn); border-color: var(--warn); }
+
+/* The whole page at a glance: one small icon per card, coloured by its answer. */
+#mini { display: flex; flex-wrap: wrap; gap: 3px; margin-left: auto; }
+#mini button {
+  display: flex;
+  padding: 3px;
+  border: none;
+  border-radius: 5px;
+  background: var(--bg2);
+  color: var(--fg4);
+}
+#mini button:hover { background: var(--bg3); }
+#mini button.ok { color: var(--ok); }
+#mini button.attention { color: var(--warn); }
+#mini button.error { color: var(--bad); }
+#mini button.waiting { color: var(--fg4); }
+#mini svg { width: 15px; height: 15px; }
+
+/* The status box, pushed to the right end of the row. */
+.server-state {
+  border: 1px solid var(--bg3);
+  border-radius: 6px;
+  background: var(--bg0);
+  padding: 4px 10px;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--fg1);
+  white-space: nowrap;
+}
+
+/* The drawer: one column of panels, sized to fit rather than to scroll. */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px 10px 10px;
+  border-top: 1px solid var(--bg2);
+  background: var(--bg0);
+}
+.server.closed .cards { display: none; }
+.server.open .cards { animation: drop 180ms ease-out; }
+@keyframes drop {
+  from { transform: translateY(-8px); opacity: 0.3; }
+  to { transform: none; opacity: 1; }
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 20px 160px 108px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: 6px;
+  padding: 6px 12px;
+  min-height: 34px;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+.card:hover { border-color: var(--bg4); background: var(--bg2); }
+.card:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+.card-icon { grid-column: 1; display: flex; flex: none; color: var(--bg4); }
+.card.ok .card-icon { color: var(--ok); }
+.card.attention .card-icon { color: var(--warn); }
+.card.error .card-icon { color: var(--bad); }
+.card.waiting .card-icon { color: var(--bg4); }
+.card-icon svg { width: 17px; height: 17px; }
+
+.card-label { grid-column: 2; font-size: 13.5px; font-weight: 650; color: var(--fg0); }
+.card-status { grid-column: 3; font-size: 12px; color: var(--fg3); }
+.card.ok .card-status { color: var(--ok); }
+.card.attention .card-status { color: var(--warn); }
+.card.error .card-status { color: var(--bad); }
+
+.card-numbers { grid-column: 4; display: flex; flex-wrap: wrap; gap: 3px 12px; min-width: 0; }
+.card-numbers span { font-size: 11.5px; color: var(--fg3); }
+.card-numbers b { color: var(--fg1); font-size: 12.5px; }
+.card-when { grid-column: 5; font-size: 11.5px; color: var(--fg4); white-space: nowrap; }
+
+#footnote { margin-top: 24px; color: var(--fg4); font-size: 13px; }
+
+#modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 20;
+}
+:root[data-theme="light"] #modal { background: rgba(40, 40, 40, 0.4); }
+#modal[hidden] { display: none; }
+
+#modal-card {
+  position: relative;
+  background: var(--bg1);
+  border: 1px solid var(--bg3);
+  border-radius: 12px;
+  max-width: 760px;
+  width: 100%;
+  max-height: 84vh;
+  overflow: auto;
+  padding: 22px 24px 24px;
+  box-shadow: 0 12px 40px var(--shadow);
+}
+#modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--fg3);
+  font-size: 22px;
+  line-height: 1;
+  padding: 4px 8px;
+}
+#modal-close:hover { color: var(--fg0); background: var(--bg2); }
+
+#modal-body h2 { display: flex; align-items: center; gap: 10px; margin: 0 40px 4px 0; font-size: 21px; color: var(--fg0); }
+#modal-body h2 svg { color: var(--fg3); flex: none; }
+#modal-body h3 { margin: 18px 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--fg4); }
+#modal-body h4 { margin: 12px 0 2px; font-size: 13.5px; color: var(--fg2); }
+#modal-body p { margin: 6px 0; color: var(--fg2); }
+#modal-body .lede { color: var(--fg1); }
+#modal-body .note { color: var(--fg4); font-size: 12.5px; }
+#modal-body .pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 12px;
+  padding: 3px 10px;
+  border: 1px solid var(--bg3);
+  color: var(--fg2);
+}
+#modal-body .pill.ok { color: var(--ok); border-color: var(--ok); }
+#modal-body .pill.attention { color: var(--warn); border-color: var(--warn); }
+#modal-body .pill.error { color: var(--bad); border-color: var(--bad); }
+#modal-body .pill.waiting { color: var(--fg4); }
+
+#modal-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 8px 0 0; }
+#modal-body dt { color: var(--fg4); font-size: 13px; }
+#modal-body dd { margin: 0; color: var(--fg1); font-size: 14px; }
+
+pre.report {
+  background: var(--bg0);
+  border: 1px solid var(--bg2);
+  border-radius: 8px;
+  color: var(--fg2);
+  font: 12.5px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  margin: 8px 0 0;
+  max-height: 300px;
+  overflow: auto;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+ul.log { list-style: none; margin: 8px 0 0; padding: 0; }
+ul.log li { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; border-top: 1px solid var(--bg2); }
+ul.log time { color: var(--fg4); font-size: 12.5px; min-width: 78px; }
+ul.log .text { color: var(--fg2); font-size: 13.5px; }
+ul.log .mark { font-size: 12px; }
+ul.log .mark.ok { color: var(--ok); }
+ul.log .mark.attention { color: var(--warn); }
+ul.log .mark.error { color: var(--bad); }
+ul.log .mark.waiting { color: var(--fg4); }
+
+@media (max-width: 720px) {
+  header { padding: 16px; }
+  main { padding: 16px; }
+  .field input { min-width: 180px; }
+  .card { grid-template-columns: 20px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 3px; }
+  .card-label { grid-column: 2; }
+  .card-status { grid-column: 3; }
+  .card-numbers { grid-column: 2; }
+  .card-when { grid-column: 3; align-self: end; text-align: right; }
+  #mini { margin-left: 0; }
+}

@@ -1,0 +1,123 @@
+# Vault health service configuration.
+#
+# Every check is switched on and everything points at this machine, so the demo
+# dashboard at http://127.0.0.1:8081 shows the vault as it is right now.
+# Raise an interval_seconds to ask a question less often, or set enabled: false to
+# stop asking it at all.
+#
+# Each check runs one command of _tools/vault.py, so the rules that decide what is
+# wrong live in the vault tooling. {{today}} in a command is replaced with the
+# current date. label and description are what the dashboard shows a reader who has
+# never seen this vault before.
+
+# Where the vault is. Empty means: find the folder that holds _tools/vault.py,
+# starting from this program's own location.
+vault_root: ""
+
+# The command used to run the vault tooling.
+runner: "python3"
+
+# How often the service wakes up to see which checks are due, in seconds.
+tick_seconds: 10
+
+# A check that runs longer than this counts as a failure rather than waiting.
+timeout_seconds: 120
+
+# Where this service answers. A client reads GET /health from here, and the answer
+# comes out of memory: only this service's own schedule touches the vault.
+listen: "127.0.0.1:8791"
+
+# Send every finished round to a server as well. Empty means clients pull only.
+# Example: push_url: "http://127.0.0.1:9001/ingest"
+push_url: ""
+
+# Browser pages allowed to read the answers. These are the demo dashboard's.
+allow_origins:
+  - "http://127.0.0.1:8081"
+  - "http://localhost:8081"
+
+# How many finished rounds are kept for the dashboard's popups.
+history_keep: 10
+
+# The interval used for a check that does not set its own.
+interval_seconds: 60
+
+checks:
+  - name: integrity
+    label: "Note rules"
+    description: "Every note says what it is, when it was last changed, and follows the vault's writing rules."
+    command: "check"
+    enabled: true
+    interval_seconds: 30
+
+  - name: size
+    label: "Vault size"
+    description: "How big the vault is: how many notes there are, how many are finished, how many are still drafts."
+    command: "metrics"
+    enabled: true
+    interval_seconds: 60
+
+  - name: numbering
+    label: "Numbering"
+    description: "Whether every note has its own number, and whether room is left to number new ones."
+    command: "ids"
+    enabled: true
+    interval_seconds: 60
+
+  - name: links
+    label: "Links between notes"
+    description: "Whether notes point at each other properly, and whether any note is cut off from the rest."
+    command: "links"
+    enabled: true
+    interval_seconds: 60
+
+  - name: open_questions
+    label: "Open questions"
+    description: "Questions the project has not answered yet."
+    command: "oq"
+    enabled: true
+    interval_seconds: 30
+
+  - name: decisions
+    label: "Decision records"
+    description: "Records of choices the project has made, and whether each one is settled."
+    command: "adr"
+    enabled: true
+    interval_seconds: 30
+
+  - name: due_dates
+    label: "Overdue and expired"
+    description: "A deadline that has passed, a review date that has come round, or a note nobody has revised in a fortnight."
+    command: "due --stale 14"
+    enabled: true
+    interval_seconds: 60
+
+  - name: recent_edits
+    label: "Edits since commit"
+    description: "Notes git reports as changed since the last commit, and any of them whose own 'last revised' date was not brought up to date."
+    command: "changed {{today}}"
+    enabled: true
+    interval_seconds: 60
+
+  - name: output_drafts
+    label: "Generated outputs"
+    description: "Documents the vault issued for someone outside it: whether each one holds to its kind's length, is registered, and stays free of internal wording."
+    command: "audit"
+    enabled: true
+    interval_seconds: 300
+
+  - name: language
+    label: "Prohibited words"
+    description: "Words that do not belong in a document written for someone outside the vault, and rule-strength words (must, should, may) used in writing that has not earned them."
+    command: "noise"
+    enabled: true
+    interval_seconds: 60
+
+  # A check the service has never heard of is allowed, as long as it names a
+  # command. Uncomment to see how long each generated output is.
+  # - name: output_lengths
+  #   label: "Output lengths"
+  #   description: "How many words each issued instance holds."
+  #   command: "words"
+  #   enabled: true
+  #   interval_seconds: 600

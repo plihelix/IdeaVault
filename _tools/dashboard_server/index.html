@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vault health</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>Vault health</h1>
+    <p class="tagline">Is the project's working record in order right now?</p>
+  </div>
+  <div class="controls">
+    <label class="field">
+      <span>Health service</span>
+      <input id="service" type="text" spellcheck="false" value="http://127.0.0.1:8791">
+    </label>
+    <label class="field">
+      <span>Ask every</span>
+      <select id="interval">
+        <option value="0">only when I press</option>
+        <option value="5">5 seconds</option>
+        <option value="10" selected>10 seconds</option>
+        <option value="30">30 seconds</option>
+        <option value="60">one minute</option>
+      </select>
+    </label>
+    <button id="refresh" type="button">Check now</button>
+    <button id="about" type="button" class="quiet">What is this vault?</button>
+    <button id="theme" type="button" class="quiet" aria-pressed="false">Light</button>
+  </div>
+</header>
+
+<main>
+  <section id="server" class="server waiting open">
+    <div class="server-row">
+      <button id="drawer-toggle" class="drawer-toggle" type="button" aria-expanded="true" aria-controls="cards" title="Show or hide the answers behind this row">
+        <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+      </button>
+      <span class="server-icon" id="server-icon"></span>
+      <span class="server-id">
+        <span id="server-host">127.0.0.1</span>
+        <span class="server-kind">vault health service</span>
+      </span>
+      <span class="modem">
+        <span class="led" title="Rx — the service's side of the link. Green while it answers, yellow after one miss, red from the fourth.">
+          <span id="rx" class="light rx"></span>
+          <span class="led-name">Rx</span>
+        </span>
+        <span class="led" title="Tx — this page's side of the link. Amber while the link is up, and green for the moment a request goes out.">
+          <span id="tx" class="light tx"></span>
+          <span class="led-name">Tx</span>
+        </span>
+      </span>
+      <div id="mini" aria-label="every question at a glance"></div>
+      <span id="server-state" class="server-state">Waiting</span>
+    </div>
+    <section id="cards" class="cards" aria-label="what was checked"></section>
+  </section>
+
+  <section id="footnote">
+    <p>
+      The service answers from memory: it looks at the vault on its own schedule and
+      keeps the newest answer ready, so this page can ask as often as it likes.
+    </p>
+  </section>
+</main>
+
+<div id="modal" hidden>
+  <div id="modal-card" role="dialog" aria-modal="true">
+    <button id="modal-close" type="button" aria-label="close">×</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
